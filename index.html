@@ -501,22 +501,30 @@ $(".cat-bar li").click(function(){
 (function(){
   var saved = localStorage.getItem("baichuan-theme");
   var iconEl = document.querySelector(".theme-icon");
+  var aEl = document.getElementById("themeToggle");
+  function setLight(){
+    if(iconEl) iconEl.textContent = "☀️";
+    if(aEl) aEl.lastChild.textContent = " 浅色模式";
+  }
+  function setDark(){
+    if(iconEl) iconEl.textContent = "🌙";
+    if(aEl) aEl.lastChild.textContent = " 深色模式";
+  }
   if(saved === "light"){
     document.documentElement.setAttribute("data-theme","light");
-    if(iconEl) iconEl.textContent = "☀️";
+    setLight();
   }
-  var btn = document.getElementById("themeToggle");
-  if(btn){
-    btn.addEventListener("click", function(){
-      var cur = document.documentElement.getAttribute("data-theme");
-      if(cur === "light"){
+  if(aEl){
+    aEl.addEventListener("click", function(e){
+      e.preventDefault();
+      if(document.documentElement.getAttribute("data-theme") === "light"){
         document.documentElement.removeAttribute("data-theme");
         localStorage.setItem("baichuan-theme","dark");
-        if(iconEl) iconEl.textContent = "🌙";
+        setDark();
       } else {
         document.documentElement.setAttribute("data-theme","light");
         localStorage.setItem("baichuan-theme","light");
-        if(iconEl) iconEl.textContent = "☀️";
+        setLight();
       }
     });
   }
