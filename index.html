@@ -220,6 +220,13 @@ main{max-width:1300px;margin:0 auto;padding:30px 20px 60px}
   .card .c-icon{width:36px;height:36px;font-size:18px}
 }
 </style>
+<script>
+(function(){
+  if(localStorage.getItem("baichuan-theme") === "light"){
+    document.documentElement.setAttribute("data-theme","light");
+  }
+})();
+</script>
 </head>
 <body>
 
@@ -499,33 +506,30 @@ $(".cat-bar li").click(function(){
 });
 // 主题切换
 (function(){
-  var saved = localStorage.getItem("baichuan-theme");
   var iconEl = document.querySelector(".theme-icon");
   var aEl = document.getElementById("themeToggle");
-  function setLight(){
-    if(iconEl) iconEl.textContent = "☀️";
-    if(aEl) aEl.lastChild.textContent = " 浅色模式";
+  function updateUI(){
+    var isLight = document.documentElement.getAttribute("data-theme") === "light";
+    if(isLight){
+      if(iconEl) iconEl.textContent = "☀️";
+      if(aEl) aEl.lastChild.textContent = " 浅色模式";
+    } else {
+      if(iconEl) iconEl.textContent = "🌙";
+      if(aEl) aEl.lastChild.textContent = " 深色模式";
+    }
   }
-  function setDark(){
-    if(iconEl) iconEl.textContent = "🌙";
-    if(aEl) aEl.lastChild.textContent = " 深色模式";
-  }
-  if(saved === "light"){
-    document.documentElement.setAttribute("data-theme","light");
-    setLight();
-  }
+  updateUI();
   if(aEl){
     aEl.addEventListener("click", function(e){
       e.preventDefault();
       if(document.documentElement.getAttribute("data-theme") === "light"){
         document.documentElement.removeAttribute("data-theme");
         localStorage.setItem("baichuan-theme","dark");
-        setDark();
       } else {
         document.documentElement.setAttribute("data-theme","light");
         localStorage.setItem("baichuan-theme","light");
-        setLight();
       }
+      updateUI();
     });
   }
 })();
